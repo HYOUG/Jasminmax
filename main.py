@@ -1,19 +1,17 @@
 from classes.Connect4 import Connect4
 from classes.JasMinMax import JasMinMax
-from random import randint
+from random import randint, sample
 from itertools import cycle
-
 
 game = Connect4()
 bot = JasMinMax()
-players = cycle(["H", "C"])
-turn = players[randint(0, 1)]
-game_id = turn
-
+players = ["H", "C"]
+players = sample(players, 2)
+game_id = players[0]
 
 print(game)
 
-while True:
+for turn in cycle(players):
     
     if turn == "H":
         while True:
@@ -49,8 +47,6 @@ while True:
         print("TIE !")
         result = 0
         break
-    else:
-        turn = next(players)
 
 
 bot.add_branch(game_id, result)

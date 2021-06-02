@@ -1,24 +1,29 @@
-from classes.Connect4 import Connect4
-from classes.JasMinMax import JasMinMax
-from random import randint
+from random import randint, sample
 from time import time
 from itertools import cycle
+from sys import path
+from os import chdir, getcwd
+
+chdir("..")
+path.append(getcwd())
+
+from classes.Connect4 import Connect4
+from classes.JasMinMax import JasMinMax
 
 game = Connect4()
 bot = JasMinMax()
-
-players = cycle(["H", "C"])
+players = ["H", "C"]
 start = time()
-training_time = float(input("Training time : "))
+training_time = int(input("Training time : "))
 
 
 while (time() - start) <= training_time:
-    print(f"time left : {training_time - (time() - start)}")
     
-    turn = players[randint(0, 1)]
-    game_id = turn
+    print(f"time left : {training_time - (int(time()) - int(start))}")
+    players = sample(players, 2)
+    game_id = players[0]
 
-    while True:                                                           # one game
+    for turn in cycle(sample(players, 2)):                                # one game
         
         if turn == "H":                                                   # fake human's turn
             while True:       
@@ -49,8 +54,6 @@ while (time() - start) <= training_time:
         elif game.is_full():
             result = 0
             break
-        
-        turn = next(players)
 
     bot.add_branch(game_id, result)
     bot.save_data()
