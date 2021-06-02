@@ -3,25 +3,29 @@ from time import time
 from itertools import cycle
 from sys import path
 from os import chdir, getcwd
+from multiprocessing import Pool
 
 chdir("..")
 path.append(getcwd())
 
 from classes.Connect4 import Connect4
 from classes.JasMinMax import JasMinMax
+from utils.functions import get_branches_num
 
 game = Connect4()
 bot = JasMinMax()
 players = ["H", "C"]
 start = time()
-training_time = int(input("Training time : "))
+i = 0
+
+train_time = int(input("Training time (secs.) : "))
+print(f"Training J4sMinMax for {train_time} seconds...")
 
 
-while (time() - start) <= training_time:
+while (time() - start) <= train_time:
     
-    print(f"time left : {training_time - (int(time()) - int(start))}")
     players = sample(players, 2)
-    game_id = players[0]
+    branch = players[0]
 
     for turn in cycle(sample(players, 2)):                                # one game
         
@@ -30,7 +34,7 @@ while (time() - start) <= training_time:
                 random_col = randint(0, 6)
                 try:
                     game.place_token("H", random_col)
-                    game_id += str(random_col)
+                    branch += str(random_col)
                     break
                 except Exception:
                     pass
@@ -40,7 +44,7 @@ while (time() - start) <= training_time:
                 random_col = randint(0, 6)
                 try:
                     game.place_token("C", random_col)
-                    game_id += str(random_col)
+                    branch += str(random_col)
                     break
                 except Exception:
                     pass
@@ -55,9 +59,15 @@ while (time() - start) <= training_time:
             result = 0
             break
 
-    bot.add_branch(game_id, result)
-    bot.save_data()
+    bot.add_branch(branch, result)
     game.reset_grid()
+    i += 1
+    
+bot.save_data()
+    
+print(f"Training finished : +{i} games simulated")
+print(f"Simulating rate : {i / train_time} games simulated / secs.")
+print(f"Total games simulated : {get_branches_num()} games")
                     
         
     

@@ -1,10 +1,10 @@
 from json import loads, dumps
 
-def get_data_stats():
+def get_branches_num():
     f = open("data/tree.json", "r")
     data = loads(f.read())
     keys = list(data.keys())
-    print(f"Number of branches : {len(keys)}")
+    return len(keys)
 
 def wipe_data() -> None:
     f = open("data/tree.json", "w")
@@ -22,6 +22,3 @@ def duplicate_data(filename: str) -> None:
     
 def split_str(string: str) -> list:
     return [char for char in string]
-
-
-get_data_stats()

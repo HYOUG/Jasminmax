@@ -7,7 +7,8 @@ game = Connect4()
 bot = JasMinMax()
 players = ["H", "C"]
 players = sample(players, 2)
-game_id = players[0]
+branch = players[0]
+bot.navigate(players[0])
 
 print(game)
 
@@ -18,17 +19,20 @@ for turn in cycle(players):
             user_input = int(input("Column num. > "))
             try:
                 game.place_token("H", user_input-1)
-                game_id += str(user_input-1)
+                branch += str(user_input-1)
+                bot.navigate(str(user_input-1))
                 break
             except Exception:
                 pass        
             
     else:
+        print(f"Branch : {bot.branch}")
+        print(f"Minmax : {bot.get_minmax()}")
         while True:
             random_col = randint(0, 6)
             try:
                 game.place_token("C", random_col)
-                game_id += str(random_col)
+                branch += str(random_col)
                 break
             except Exception:
                 pass
@@ -49,11 +53,11 @@ for turn in cycle(players):
         break
 
 
-bot.add_branch(game_id, result)
+bot.add_branch(branch, result)
 bot.save_data()
 game.reset_grid()
 
-print(f"{game_id}:{result} run saved !")
+print(f"{branch}:{result} run saved !")
                     
         
     

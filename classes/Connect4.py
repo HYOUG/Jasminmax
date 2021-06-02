@@ -1,7 +1,7 @@
 class Connect4:
     
     def __init__(self):
-        self.slots = [["_" for _ in range(6)] for _ in range(7)]        # list of the vertical columns
+        self.slots = [["_" for _ in range(6)] for _ in range(7)]
         self.grid = "="*29 + "\n" + "".join(["".join([f"| {self.slots[col][row]} " for col in range(7)]) + "|\n" for row in range(5, -1, -1)]) + "="*29
         
         
@@ -28,7 +28,6 @@ class Connect4:
         hor_pos = []
         dia_pos = []
         
-        
         for col in range(7):
             for row in range(6-3):
                 ver_pos.append([self.slots[col][row + i] for i in range(4)])
@@ -43,8 +42,7 @@ class Connect4:
         for col in range(0+3, 7):
             for row in range(0+3, 6):
                 dia_pos.append([self.slots[col - i][row - i] for i in range(4)])
-        
-                
+                       
         if target in ver_pos:
             return True
         if target in hor_pos:
