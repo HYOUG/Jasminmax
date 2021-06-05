@@ -17,7 +17,6 @@ class Connect4:
     def place_token(self, char: str, col: int) -> None:
         try:
             self.slots[col][self.slots[col].index("_")] = char
-            self.set_grid()
         except ValueError:
             raise Exception(f"column num. {col} is full")
         
@@ -39,9 +38,9 @@ class Connect4:
         for col in range(7-3):
             for row in range(6-3):
                 dia_pos.append([self.slots[col + i][row + i] for i in range(4)])
-        for col in range(0+3, 7):
+        for col in range(7-3):
             for row in range(0+3, 6):
-                dia_pos.append([self.slots[col - i][row - i] for i in range(4)])
+                dia_pos.append([self.slots[col + i][row - i] for i in range(4)])
                        
         if target in ver_pos:
             return True
@@ -57,4 +56,5 @@ class Connect4:
         
         
     def __str__(self) -> str:
+        self.set_grid()
         return self.grid
