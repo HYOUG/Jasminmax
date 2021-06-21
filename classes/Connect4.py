@@ -6,26 +6,24 @@ class Connect4:
     
     def __init__(self):
         self.slots = [["_" for _ in range(6)] for _ in range(7)]
+        self.state = ""
         
         
     def set_grid(self) -> None:
        self.grid = "="*29 + "\n" + "".join(["".join([f"| {self.slots[col][row]} " for col in range(7)]) + "|\n" for row in range(5, -1, -1)]) + "="*29
-       
-       
-    def reset_grid(self) -> None:
-        self.slots = [["_" for _ in range(6)] for _ in range(7)]
         
         
     def place(self, char: str, col: int) -> None:
         try:
             self.slots[col][self.slots[col].index("_")] = char
+            self.state += str(col)
         except ValueError:
-            raise Exception(f"Impossible Move : Column number {col} is full")
+            raise Exception(f"Illegal Move : Column num. {col} is full")
         
         
     def get_alignments(self, char_list: list) -> int:
         targets = list(map(lambda el: list(el) , permutations(char_list, len(char_list))))
-        #targets = remove_duplicates(targets) <- fix that (remove dupes)
+        targets = remove_duplicates(targets)
         targets_len = len(char_list)
         alignments = 0
         
@@ -57,9 +55,10 @@ class Connect4:
     def check_win(self, char: str) -> bool:
         alignments = self.get_alignments([char] * 4)
         return alignments >= 1
-            
-            
+    
+    
     def is_full(self) -> bool:
+        """Return whether or not the board is full"""
         return sum([col.count("_") for col in self.slots]) == 0
         
         
